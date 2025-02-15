@@ -54,7 +54,7 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 
 		private void Update() 
 		{
-
+			
 			if (Input.touchCount == 0) return;
 			foreach (var touch in Input.touches)
 			{

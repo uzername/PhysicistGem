@@ -14,7 +14,7 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
         [SerializeField] private KeyCode SprintInput;
         [SerializeField] private KeyCode CrouchInput;
         [SerializeField] private bool LockCursor;
-        [SerializeField] private Vector2 _Sensitivity = new Vector2(50f, 50f);
+        [SerializeField] private Vector2 _Sensitivity = new Vector2(100f, 100f);
 
         private MovementController movementController;
         private CameraLook cameraLook;
@@ -37,10 +37,9 @@ namespace FirstPersonMobileTools.DynamicFirstPerson
 
         private void Update() {
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
 
-            cameraLook.delta += new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")) * _Sensitivity;
-
+                cameraLook.delta += new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y")) * _Sensitivity;
             movementController.External_Input_Movement = (Input.GetAxis("Horizontal") * Vector2.right + Input.GetAxis("Vertical") * Vector2.up).normalized;
 
             if (Input.GetKeyDown(JumpInput))
