@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,6 +16,18 @@ public class ControlMain : MonoBehaviour
     /// Canvas that holds control controls for cannon
     /// </summary>
     public Canvas cannonCanvas;
+    /// <summary>
+    /// slider used to adjust angle
+    /// </summary>
+    public Slider AngleSlider;
+    /// <summary>
+    /// slider used to adjust angle
+    /// </summary>
+    public Transform BarrelTransform;
+    /// <summary>
+    /// Slider used to control power
+    /// </summary>
+    public Slider PowerSlider;
     private const byte WALK = 0;
     private const byte LAUNCH = 1;
     void Start()
@@ -56,5 +69,25 @@ public class ControlMain : MonoBehaviour
             default:
                 break;
         }
+    }
+
+
+    public void ChangeAngle()  {
+        if (AngleSlider == null || BarrelTransform == null) {
+            Debug.LogError("Cannot change angle, complete init of ControlMain::ChangeAngle");
+            return; 
+        }
+        float angleValue = AngleSlider.value;
+        BarrelTransform.transform.rotation = Quaternion.Euler(0, 0, angleValue);
+        
+    }
+    public void ChangePower()
+    {
+        if (PowerSlider == null || BarrelTransform == null)
+        {
+            Debug.LogError("Cannot change power, complete init of ControlMain::ChangePower");
+            return;
+        }
+        BarrelTransform.GetComponentInParent<LaunchProjectileMy>().launchVelocity = PowerSlider.value;
     }
 }

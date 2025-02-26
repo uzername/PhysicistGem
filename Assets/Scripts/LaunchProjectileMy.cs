@@ -13,6 +13,7 @@ public class LaunchProjectileMy : MonoBehaviour
 
     void Update()
     {
+        // it won't be called
         if (Input.GetButtonDown("Fire1") && launchOnClick)
         {
             performLaunching();
@@ -22,7 +23,8 @@ public class LaunchProjectileMy : MonoBehaviour
     {
         if (launchPoint == null)
         {
-            Debug.Log("launch point not defined");
+            Debug.LogError("launch point not defined in performLaunching()");
+            return;
         }
         GameObject ball = Instantiate(projectile,
         launchPoint.position, launchPoint.rotation);
