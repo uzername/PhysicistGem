@@ -32,7 +32,11 @@ namespace GeometryOfSpheres
             faces = new List<Triangle>();
             midpointCache = new Dictionary<(int, int), int>();
         }
-
+        /// <summary>
+        /// makes sphere that consists of Vertices and Faces
+        /// </summary>
+        /// <param name="subdivisions"></param>
+        /// <returns>List of Vertices and List of Faces as indexes of those Vertices</returns>
         public (List<Vector3> Vertices, List<int[]> Faces) Generate(int subdivisions)
         {
             CreateIcosahedron();

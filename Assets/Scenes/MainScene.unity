@@ -3206,7 +3206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20e8ff01e5d4a904eb66dd872af89a40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  subdivisionsNumber: 3
+  subdivisionsNumber: 1
   radiusSphere: 10
 --- !u!4 &2048678244
 Transform:
