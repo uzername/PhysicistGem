@@ -116,4 +116,110 @@ namespace GeometryOfSpheres
             return midpointIndex;
         }
     }
+
+    /// <summary>
+    /// generate sharp icosphere for pondering. This code was created by ChatGPT
+    /// </summary>
+    class SharpIcosphereGenerator
+    {
+        private struct Triangle
+        {
+            public Vector3 V1, V2, V3;
+            public Triangle(Vector3 v1, Vector3 v2, Vector3 v3)
+            {
+                V1 = v1;
+                V2 = v2;
+                V3 = v3;
+            }
+        }
+
+        private List<Triangle> faces;
+
+        public SharpIcosphereGenerator()
+        {
+            faces = new List<Triangle>();
+        }
+
+        public (List<Vector3> Vertices, List<int> Indices) Generate(int subdivisions)
+        {
+            CreateIcosahedron();
+            for (int i = 0; i < subdivisions; i++)
+            {
+                Subdivide();
+            }
+
+            // Flattened vertex list (no shared vertices)
+            List<Vector3> vertices = new();
+            List<int> indices = new();
+            int index = 0;
+
+            foreach (var tri in faces)
+            {
+                vertices.Add(tri.V1);
+                vertices.Add(tri.V2);
+                vertices.Add(tri.V3);
+                indices.Add(index++);
+                indices.Add(index++);
+                indices.Add(index++);
+            }
+
+            return (vertices, indices);
+        }
+
+        private void CreateIcosahedron()
+        {
+            faces.Clear();
+
+            float t = (float)((1.0 + Math.Sqrt(5.0)) / 2.0); // Golden ratio
+
+            Vector3[] baseVertices = new Vector3[]
+            {
+            new(-1,  t,  0), new(1,  t,  0), new(-1, -t,  0), new(1, -t,  0),
+            new(0, -1,  t), new(0,  1,  t), new(0, -1, -t), new(0,  1, -t),
+            new(t,  0, -1), new(t,  0,  1), new(-t,  0, -1), new(-t,  0,  1)
+            };
+
+            for (int i = 0; i < baseVertices.Length; i++)
+            {
+                baseVertices[i] = Vector3.Normalize(baseVertices[i]);
+            }
+
+            int[,] baseFaces = new int[,]
+            {
+            { 0, 11, 5 }, { 0, 5, 1 }, { 0, 1, 7 }, { 0, 7, 10 }, { 0, 10, 11 },
+            { 1, 5, 9 }, { 5, 11, 4 }, { 11, 10, 2 }, { 10, 7, 6 }, { 7, 1, 8 },
+            { 3, 9, 4 }, { 3, 4, 2 }, { 3, 2, 6 }, { 3, 6, 8 }, { 3, 8, 9 },
+            { 4, 9, 5 }, { 2, 4, 11 }, { 6, 2, 10 }, { 8, 6, 7 }, { 9, 8, 1 }
+            };
+
+            for (int i = 0; i < baseFaces.GetLength(0); i++)
+            {
+                faces.Add(new Triangle(
+                    baseVertices[baseFaces[i, 0]],
+                    baseVertices[baseFaces[i, 1]],
+                    baseVertices[baseFaces[i, 2]]
+                ));
+            }
+        }
+
+        private void Subdivide()
+        {
+            var newFaces = new List<Triangle>();
+
+            foreach (var tri in faces)
+            {
+                Vector3 a = Vector3.Normalize((tri.V1 + tri.V2) / 2f);
+                Vector3 b = Vector3.Normalize((tri.V2 + tri.V3) / 2f);
+                Vector3 c = Vector3.Normalize((tri.V3 + tri.V1) / 2f);
+
+                newFaces.Add(new Triangle(tri.V1, a, c));
+                newFaces.Add(new Triangle(tri.V2, b, a));
+                newFaces.Add(new Triangle(tri.V3, c, b));
+                newFaces.Add(new Triangle(a, b, c));
+            }
+
+            faces = newFaces;
+        }
+    }
+
 }

@@ -1,23 +1,41 @@
 using GeometryOfSpheres;
+using NUnit.Framework.Internal;
 using System.Buffers.Text;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class GenerateSphere : MonoBehaviour
 {
-    private IcosphereGenerator sphericalGenerator; 
+    private SharpIcosphereGenerator sphericalGenerator; 
     public int subdivisionsNumber = 1;
     public int radiusSphere = 10;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        sphericalGenerator = new IcosphereGenerator();
+        sphericalGenerator = new SharpIcosphereGenerator();
         var somethingReturned = sphericalGenerator.Generate(subdivisionsNumber);
-        MakeSphere(somethingReturned.Item1, somethingReturned.Item2);
+        MakeSphereSharp(somethingReturned.Item1, somethingReturned.Item2);
 
     }
+    private void MakeSphereSharp(List<Vector3> VerticesGenerated, List<int> IndicesGenerated)
+    {
+        Mesh mesh = new Mesh();
+        mesh.vertices = VerticesGenerated.ToArray();
+        mesh.triangles = IndicesGenerated.ToArray();
+        mesh.RecalculateNormals();
+        mesh.RecalculateBounds();
+        MeshFilter meshFilter = gameObject.AddComponent<MeshFilter>();
+        meshFilter.mesh = mesh;
+        
+        MeshRenderer meshRenderer = gameObject.AddComponent<MeshRenderer>();
+        
+        Material newMat = Resources.Load("Materials/MeshMaterial", typeof(Material)) as Material;
+        meshRenderer.material = newMat;
+    }
     /// <summary>
-    /// generate sphere
+    /// generate sphere and add it to scene, but this one if you use regular IcosphereGenerator. 
+    /// Result we be smoothed out
     /// </summary>
     private void MakeSphere(List<Vector3> VerticesGenerated, List<int[]> FacesGenerated)
     {
