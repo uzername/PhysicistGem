@@ -26,8 +26,7 @@ public class LaunchProjectileMy : MonoBehaviour
             Debug.LogError("launch point not defined in performLaunching()");
             return;
         }
-        GameObject ball = Instantiate(projectile,
-        launchPoint.position, launchPoint.rotation);
+        GameObject ball = Instantiate(projectile, launchPoint.position, launchPoint.rotation);
 
         ball.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(launchVelocity, 0, 0));
     }

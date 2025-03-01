@@ -21,7 +21,12 @@ public class GenerateSphere : MonoBehaviour
     private void MakeSphereSharp(List<Vector3> VerticesGenerated, List<int> IndicesGenerated)
     {
         Mesh mesh = new Mesh();
-        mesh.vertices = VerticesGenerated.ToArray();
+        List<Vector3> VerticesCopy = VerticesGenerated;
+        for (int i=0; i< VerticesCopy.Count; i++)
+        {
+            VerticesCopy[i]*=radiusSphere;
+        }
+        mesh.vertices = VerticesCopy.ToArray();
         mesh.triangles = IndicesGenerated.ToArray();
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();

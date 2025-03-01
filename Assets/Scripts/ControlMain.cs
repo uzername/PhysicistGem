@@ -21,7 +21,7 @@ public class ControlMain : MonoBehaviour
     /// </summary>
     public Slider AngleSlider;
     /// <summary>
-    /// slider used to adjust angle
+    /// a point that rotates barrel
     /// </summary>
     public Transform BarrelTransform;
     /// <summary>
@@ -70,7 +70,20 @@ public class ControlMain : MonoBehaviour
                 break;
         }
     }
-
+    /// <summary>
+    /// re-draw trajectory. Oh my, it has so much geometry and physics, this is unbelievable
+    /// </summary>
+    private void reComputeTrajectory()
+    {
+        float rawLaunchPower = BarrelTransform.GetComponentInParent<LaunchProjectileMy>().launchVelocity;
+        // it is hard to say where exception may happen, but it may happen
+        float rawMass= BarrelTransform.GetComponentInParent<LaunchProjectileMy>().projectile.GetComponent<Rigidbody>().mass;
+        Transform launchPosition = BarrelTransform.Find("LaunchOrigin");
+        Vector3 localForce = new Vector3(rawLaunchPower, 0, 0);
+        // ChatGPT helped me to apply rotation of launchPosition to vector force
+        Vector3 worldForce = launchPosition.TransformDirection(localForce);
+        (BarrelTransform.GetComponentInParent<DrawTrajectory>() as DrawTrajectory).UpdateTrajectory(worldForce, rawMass, launchPosition.position);
+    }
 
     public void ChangeAngle()  {
         if (AngleSlider == null || BarrelTransform == null) {
@@ -79,7 +92,7 @@ public class ControlMain : MonoBehaviour
         }
         float angleValue = AngleSlider.value;
         BarrelTransform.transform.rotation = Quaternion.Euler(0, 0, angleValue);
-        
+        reComputeTrajectory();
     }
     public void ChangePower()
     {
@@ -89,5 +102,6 @@ public class ControlMain : MonoBehaviour
             return;
         }
         BarrelTransform.GetComponentInParent<LaunchProjectileMy>().launchVelocity = PowerSlider.value;
+        reComputeTrajectory();
     }
 }
