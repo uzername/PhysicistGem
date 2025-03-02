@@ -28,6 +28,10 @@ public class ControlMain : MonoBehaviour
     /// Slider used to control power
     /// </summary>
     public Slider PowerSlider;
+    /// <summary>
+    /// Lets show and hide line used for targeting
+    /// </summary>
+    public GameObject LineTargeting;
     private const byte WALK = 0;
     private const byte LAUNCH = 1;
     void Start()
@@ -46,7 +50,6 @@ public class ControlMain : MonoBehaviour
     /// </summary>
     public void ModeToggle()
     {
-        Debug.Log(mainSlider.value);
         switch (mainSlider.value)
         {
             case WALK:
@@ -54,6 +57,9 @@ public class ControlMain : MonoBehaviour
                     if ((translocationalCanvas != null)&&(cannonCanvas!=null))  {
                         translocationalCanvas.gameObject.SetActive( true );
                         cannonCanvas.gameObject.SetActive( false );
+                        if (LineTargeting!=null)  {
+                            LineTargeting.gameObject.SetActive( false );
+                        }
                     }
                     break;
                 }
@@ -63,6 +69,9 @@ public class ControlMain : MonoBehaviour
                     {
                         translocationalCanvas.gameObject.SetActive(false);
                         cannonCanvas.gameObject.SetActive( true );
+                        if (LineTargeting != null)  {
+                            LineTargeting.gameObject.SetActive(true);
+                        }
                     }
                     break;
                 }

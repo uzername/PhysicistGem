@@ -10,6 +10,10 @@ public class GenerateSphere : MonoBehaviour
     private SharpIcosphereGenerator sphericalGenerator; 
     public int subdivisionsNumber = 1;
     public int radiusSphere = 10;
+    /// <summary>
+    /// how thick is the segment of hollow-out sphere. Should be larger than 1
+    /// </summary>
+    public float radiusDeltaPercent = 1.2f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -18,6 +22,62 @@ public class GenerateSphere : MonoBehaviour
         MakeSphereSharp(somethingReturned.Item1, somethingReturned.Item2);
 
     }
+    /// <summary>
+    /// generate multiple game objects aligned as a sphere
+    /// </summary>
+    /// <param name="obj">parent game object where to put it</param>
+    /// <param name="VerticesGenerated"></param>
+    /// <param name="IndicesGenerated"></param>
+    private void MakeSphereSharpSegmented(GameObject obj, List<Vector3> VerticesGenerated, List<int> IndicesGenerated)
+    {
+        int i = 0;
+        while (i< VerticesGenerated.Count)  {
+            MeshFilter meshFilter = obj.AddComponent<MeshFilter>();
+            MeshRenderer meshRenderer = obj.AddComponent<MeshRenderer>();
+
+            Vector3 baseA = VerticesGenerated[i]* radiusSphere;
+            Vector3 baseB = VerticesGenerated[i+1]* radiusSphere;
+            Vector3 baseC = VerticesGenerated[i + 2] * radiusSphere;
+            Vector3 topA = baseA * radiusDeltaPercent;
+            Vector3 topB = baseB * radiusDeltaPercent;
+            Vector3 topC = baseC * radiusDeltaPercent;
+
+            Mesh mesh = new Mesh();
+            mesh.vertices = new Vector3[]
+            {
+            // Base
+            baseA, baseB, baseC,
+            // Top
+            topA, topB, topC
+            };
+
+            mesh.triangles = new int[]
+            {
+             // Base triangle (clockwise order)
+                0, 1, 2,
+                // Top triangle (clockwise order)
+                3, 5, 4,
+                // Side faces (fixing the winding order)
+                0, 3, 4,  0, 4, 1,  // Side 1
+                1, 4, 5,  1, 5, 2,  // Side 2
+                2, 5, 3,  2, 3, 0   // Side 3
+            };
+
+            mesh.RecalculateNormals();
+            mesh.RecalculateBounds();
+
+            meshFilter.mesh = mesh;
+            Material newMat = Resources.Load("Materials/MeshMaterial", typeof(Material)) as Material;
+            meshRenderer.material = newMat;
+
+            i += 3;
+        }
+    }
+    /// <summary>
+    /// adds solid ico-sphere to scene, non-smoothed
+    /// </summary>
+    /// <param name="VerticesGenerated"></param>
+    /// <param name="IndicesGenerated"></param>
     private void MakeSphereSharp(List<Vector3> VerticesGenerated, List<int> IndicesGenerated)
     {
         Mesh mesh = new Mesh();
