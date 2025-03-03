@@ -19,8 +19,8 @@ public class GenerateSphere : MonoBehaviour
     {
         sphericalGenerator = new SharpIcosphereGenerator();
         var somethingReturned = sphericalGenerator.Generate(subdivisionsNumber);
-        MakeSphereSharp(somethingReturned.Item1, somethingReturned.Item2);
-
+        //MakeSphereSharp(somethingReturned.Item1, somethingReturned.Item2);
+        MakeSphereSharpSegmented(somethingReturned.Item1, somethingReturned.Item2);
     }
     /// <summary>
     /// generate multiple game objects aligned as a sphere
@@ -28,10 +28,18 @@ public class GenerateSphere : MonoBehaviour
     /// <param name="obj">parent game object where to put it</param>
     /// <param name="VerticesGenerated"></param>
     /// <param name="IndicesGenerated"></param>
-    private void MakeSphereSharpSegmented(GameObject obj, List<Vector3> VerticesGenerated, List<int> IndicesGenerated)
+    private void MakeSphereSharpSegmented(List<Vector3> VerticesGenerated, List<int> IndicesGenerated)
     {
-        int i = 0;
+        int i = 0; int j = 0;
         while (i< VerticesGenerated.Count)  {
+            if ((j % 2 == 0)) {
+                j++;
+                i += 3;
+                continue;
+            }
+            GameObject obj = new GameObject($"SegmentOfSphere{i}");
+            obj.transform.parent = gameObject.transform;
+
             MeshFilter meshFilter = obj.AddComponent<MeshFilter>();
             MeshRenderer meshRenderer = obj.AddComponent<MeshRenderer>();
 
@@ -45,22 +53,26 @@ public class GenerateSphere : MonoBehaviour
             Mesh mesh = new Mesh();
             mesh.vertices = new Vector3[]
             {
-            // Base
-            baseA, baseB, baseC,
-            // Top
-            topA, topB, topC
+       // Base
+        baseA, baseB, baseC,
+        // Top
+        topA, topB, topC,
+        // Side faces (duplicated for sharp edges)
+        baseA, baseB, topB, topA, // Side 1
+        baseB, baseC, topC, topB, // Side 2
+        baseC, baseA, topA, topC  // Side 3
             };
 
             mesh.triangles = new int[]
             {
-             // Base triangle (clockwise order)
-                0, 1, 2,
-                // Top triangle (clockwise order)
-                3, 5, 4,
-                // Side faces (fixing the winding order)
-                0, 3, 4,  0, 4, 1,  // Side 1
-                1, 4, 5,  1, 5, 2,  // Side 2
-                2, 5, 3,  2, 3, 0   // Side 3
+        // Base triangle
+        2, 1, 0,
+        // Top triangle
+        4, 5, 3,
+        // Side faces (each face has its own unique vertices)
+        8, 7, 6,  9, 8, 6,  // Side 1
+        12, 11, 10,  13, 12, 10,  // Side 2
+        16, 15, 14,  17, 16, 14   // Side 3
             };
 
             mesh.RecalculateNormals();
@@ -69,7 +81,7 @@ public class GenerateSphere : MonoBehaviour
             meshFilter.mesh = mesh;
             Material newMat = Resources.Load("Materials/MeshMaterial", typeof(Material)) as Material;
             meshRenderer.material = newMat;
-
+            j++;
             i += 3;
         }
     }
