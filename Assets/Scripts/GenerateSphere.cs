@@ -32,13 +32,10 @@ public class GenerateSphere : MonoBehaviour
     {
         int i = 0; int j = 0;
         while (i< VerticesGenerated.Count)  {
-            if ((j % 2 == 0)) {
-                j++;
-                i += 3;
-                continue;
-            }
             GameObject obj = new GameObject($"SegmentOfSphere{i}");
-            obj.transform.parent = gameObject.transform;
+            //obj.transform.parent = gameObject.transform;
+            obj.transform.SetParent(gameObject.transform);
+            obj.transform.localPosition = Vector3.zero; // Align with parent
 
             MeshFilter meshFilter = obj.AddComponent<MeshFilter>();
             MeshRenderer meshRenderer = obj.AddComponent<MeshRenderer>();
