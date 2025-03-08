@@ -22,6 +22,16 @@ public class GenerateSphere : MonoBehaviour
         //MakeSphereSharp(somethingReturned.Item1, somethingReturned.Item2);
         MakeSphereSharpSegmented(somethingReturned.Item1, somethingReturned.Item2);
     }
+    private void MoveTriangle(ref Vector3 A, ref Vector3 B, ref Vector3 C, Vector3 P, float d)
+    {
+        // Vector directed from P to A
+        Vector3 direction = (A - P).normalized;
+
+        // Move vertices by distance d
+        A += direction * d;
+        B += direction * d;
+        C += direction * d;
+    }
     /// <summary>
     /// generate multiple game objects aligned as a sphere
     /// </summary>
@@ -43,10 +53,14 @@ public class GenerateSphere : MonoBehaviour
             Vector3 baseA = VerticesGenerated[i]* radiusSphere;
             Vector3 baseB = VerticesGenerated[i+1]* radiusSphere;
             Vector3 baseC = VerticesGenerated[i + 2] * radiusSphere;
-            Vector3 topA = baseA * radiusDeltaPercent;
-            Vector3 topB = baseB * radiusDeltaPercent;
-            Vector3 topC = baseC * radiusDeltaPercent;
-
+            Vector3 topA = new Vector3 ( baseA.x, baseA.y, baseA.z) * radiusDeltaPercent;
+            Vector3 topB = new Vector3( baseB.x, baseB.y, baseB.z) * radiusDeltaPercent;
+            Vector3 topC = new Vector3(baseC.x, baseC.y, baseC.z) * radiusDeltaPercent;
+            //if (j % 3 == 0)
+            {
+                MoveTriangle(ref baseA, ref baseB, ref baseC, new Vector3(0, 0, 0), 1.0f);
+                MoveTriangle(ref topA, ref topB, ref topC, new Vector3(0, 0, 0), 1.0f);
+            }
             Mesh mesh = new Mesh();
             mesh.vertices = new Vector3[]
             {
@@ -67,9 +81,9 @@ public class GenerateSphere : MonoBehaviour
         // Top triangle
         4, 5, 3,
         // Side faces (each face has its own unique vertices)
-        8, 7, 6,  9, 8, 6,  // Side 1
-        12, 11, 10,  13, 12, 10,  // Side 2
-        16, 15, 14,  17, 16, 14   // Side 3
+        6, 7, 8,  6, 8, 9,  // Side 1
+        10, 11, 12,  10, 12, 13,  // Side 2
+        14, 15, 16,  14, 16, 17   // Side 3
             };
 
             mesh.RecalculateNormals();
