@@ -24,14 +24,23 @@ public class GenerateSphere : MonoBehaviour
     }
     private void MoveTriangle(ref Vector3 A, ref Vector3 B, ref Vector3 C, Vector3 P, float d)
     {
-        // Vector directed from P to A
-        Vector3 direction = (A - P).normalized;
-
-        // Move vertices by distance d
-        A += direction * d;
-        B += direction * d;
-        C += direction * d;
+        bool moveAlongNormal = true;
+        if (moveAlongNormal == false)
+        {
+            // Vector directed from P to A
+            Vector3 direction = (A - P).normalized;
+            // Move vertices by distance d
+            A += direction * d;
+            B += direction * d;
+            C += direction * d;
+        } else {
+            Vector3 normal = Vector3.Cross(B - A, C - A).normalized;
+            A += normal * d;
+            B += normal * d;
+            C += normal * d;
+        }
     }
+    
     /// <summary>
     /// generate multiple game objects aligned as a sphere
     /// </summary>
