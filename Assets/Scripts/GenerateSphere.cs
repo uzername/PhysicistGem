@@ -98,9 +98,20 @@ public class GenerateSphere : MonoBehaviour
             mesh.RecalculateNormals();
             mesh.RecalculateBounds();
 
+
             meshFilter.mesh = mesh;
             Material newMat = Resources.Load("Materials/MeshMaterial", typeof(Material)) as Material;
             meshRenderer.material = newMat;
+
+            //obj.isStatic = true;
+            // Add Rigidbody but keep it kinematic (won't fall but detects collisions)
+
+            Rigidbody rigidbody = obj.AddComponent<Rigidbody>();
+            rigidbody.isKinematic = true; // No physics forces affect it
+            rigidbody.useGravity = false; // Prevents falling
+
+            MeshCollider meshCollider = obj.AddComponent<MeshCollider>();
+            meshCollider.convex = true; // Keeps it accurate for non-moving objects
             j++;
             i += 3;
         }
