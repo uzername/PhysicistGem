@@ -3344,6 +3344,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2048678244}
   - component: {fileID: 2048678243}
+  - component: {fileID: 2048678245}
   m_Layer: 0
   m_Name: PrismSample
   m_TagString: Untagged
@@ -3366,6 +3367,7 @@ MonoBehaviour:
   subdivisionsNumber: 2
   radiusSphere: 3
   radiusDeltaPercent: 1.2
+  GeneratorNumberSegments: 3
 --- !u!4 &2048678244
 Transform:
   m_ObjectHideFlags: 0
@@ -3381,6 +3383,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2048678245
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2048678242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6edbbd150a4eb9a4b9d7381a165113d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parent: {fileID: 2048678244}
+  speed: 20
 --- !u!1 &2106762621
 GameObject:
   m_ObjectHideFlags: 0

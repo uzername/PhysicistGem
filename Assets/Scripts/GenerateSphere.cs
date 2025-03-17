@@ -2,6 +2,8 @@ using GeometryOfSpheres;
 using NUnit.Framework.Internal;
 using System.Buffers.Text;
 using System.Collections.Generic;
+using Unity.VisualScripting.Dependencies.Sqlite;
+using UnityEditor;
 using UnityEngine;
 using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
@@ -15,6 +17,8 @@ public class GenerateSphere : MonoBehaviour
     /// </summary>
     public float radiusDeltaPercent = 1.2f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [Range(1,3)]
+    public int GeneratorNumberSegments = 1;
     void Start()
     {
         sphericalGenerator = new SharpIcosphereGenerator();
@@ -51,6 +55,7 @@ public class GenerateSphere : MonoBehaviour
     {
         int i = 0; int j = 0;
         while (i< VerticesGenerated.Count)  {
+            int chosenSegment = Random.Range(1, GeneratorNumberSegments + 1);
             GameObject obj = new GameObject($"SegmentOfSphere{i}");
             //obj.transform.parent = gameObject.transform;
             obj.transform.SetParent(gameObject.transform);
@@ -98,9 +103,9 @@ public class GenerateSphere : MonoBehaviour
             mesh.RecalculateNormals();
             mesh.RecalculateBounds();
 
-
+            
             meshFilter.mesh = mesh;
-            Material newMat = Resources.Load("Materials/MeshMaterial", typeof(Material)) as Material;
+            Material newMat = Resources.Load($"Materials/MeshMaterial{chosenSegment}", typeof(Material)) as Material;
             meshRenderer.material = newMat;
 
             //obj.isStatic = true;
