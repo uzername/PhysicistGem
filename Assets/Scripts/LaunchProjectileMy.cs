@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class LaunchProjectileMy : MonoBehaviour
 {
+    [Range(1, 3)]
+    public int GeneratorNumberSegments = 3;
     public GameObject projectile;
     public Transform launchPoint;
 
@@ -27,6 +29,9 @@ public class LaunchProjectileMy : MonoBehaviour
             return;
         }
         GameObject ball = Instantiate(projectile, launchPoint.position, launchPoint.rotation);
+        int chosenSegment = Random.Range(1, GeneratorNumberSegments + 1);
+        Material newMat = Resources.Load($"Materials/MeshMaterial{chosenSegment}", typeof(Material)) as Material;
+        ball.transform.GetChild(0).gameObject.GetComponent<MeshRenderer>().material = newMat;
 
         ball.GetComponent<Rigidbody>().AddRelativeForce(new Vector3(launchVelocity, 0, 0));
     }
