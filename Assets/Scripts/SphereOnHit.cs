@@ -16,11 +16,12 @@ public class SphereOnHit : MonoBehaviour
     }
     private void OnCollisionEnter(Collision collision)
     {
-        string ballMaterialName = collision.collider.gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material.name;
+        string ballMaterialName = this.gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material.name;
         if (collision.gameObject.name.StartsWith("SegmentOfSphere"))
         {
-            string segmentMaterialName = collision.gameObject.transform.GetChild(0).GetComponent<MeshRenderer>().material.name;
-            Destroy(collision.gameObject);
+            string segmentMaterialName = collision.gameObject.transform.GetComponent<MeshRenderer>().material.name;
+            if (segmentMaterialName.Equals(ballMaterialName,StringComparison.InvariantCultureIgnoreCase))
+                Destroy(collision.gameObject);
         }
     }
 }
