@@ -1719,8 +1719,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 32
-  m_fontSizeBase: 32
+  m_fontSize: 26
+  m_fontSizeBase: 26
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1995,8 +1995,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 32
-  m_fontSizeBase: 32
+  m_fontSize: 26
+  m_fontSizeBase: 26
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2610,6 +2610,7 @@ MonoBehaviour:
   GeneratorNumberSegments: 3
   projectile: {fileID: 9176914993935253804, guid: 13ef14c6d7384b642ac592a417adcf47, type: 3}
   launchPoint: {fileID: 1108449731}
+  usedOrbsLbl: {fileID: 621883246}
   launchOnClick: 0
   launchVelocity: 700
 --- !u!114 &1227870301
