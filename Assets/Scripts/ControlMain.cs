@@ -1,5 +1,7 @@
+using Assets.Scripts;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ControlMain : MonoBehaviour
@@ -112,5 +114,10 @@ public class ControlMain : MonoBehaviour
         }
         BarrelTransform.GetComponentInParent<LaunchProjectileMy>().launchVelocity = PowerSlider.value;
         reComputeTrajectory();
+    }
+    public void OnFinishNowClicked()
+    {
+        Debug.Log($"You decided to finish now. You have hit {StaticConstants.SegmentsHit} segments and {StaticConstants.SegmentsLeft} were left");
+        SceneManager.LoadScene(2);
     }
 }

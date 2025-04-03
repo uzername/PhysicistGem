@@ -1,3 +1,4 @@
+using Assets.Scripts;
 using GeometryOfSpheres;
 using NUnit.Framework.Internal;
 using System.Buffers.Text;
@@ -54,6 +55,8 @@ public class GenerateSphere : MonoBehaviour
     private void MakeSphereSharpSegmented(List<Vector3> VerticesGenerated, List<int> IndicesGenerated)
     {
         int i = 0; int j = 0;
+        StaticConstants.SegmentsLeft = VerticesGenerated.Count;
+        StaticConstants.SegmentsHit = 0;
         while (i< VerticesGenerated.Count)  {
             int chosenSegment = Random.Range(1, GeneratorNumberSegments + 1);
             GameObject obj = new GameObject($"SegmentOfSphere{i}");

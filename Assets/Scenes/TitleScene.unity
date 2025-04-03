@@ -414,7 +414,7 @@ MonoBehaviour:
     3. Launch orb to the sphere to hit segments of
     it
 
-    Better looks at vertical orientation'
+    Better looks at horizontal orientation'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 38b3da94383278d43bcf88494e56799a, type: 2}
   m_sharedMaterial: {fileID: -4479701652169352246, guid: 38b3da94383278d43bcf88494e56799a, type: 2}

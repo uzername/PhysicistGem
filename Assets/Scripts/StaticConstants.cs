@@ -9,5 +9,7 @@ namespace Assets.Scripts
     public class StaticConstants
     {
         public static int UsedSpheres = 0;
+        public static int SegmentsHit = 0;
+        public static int SegmentsLeft = 0;
     }
 }
