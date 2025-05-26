@@ -3,10 +3,8 @@ using GeometryOfSpheres;
 using NUnit.Framework.Internal;
 using System.Buffers.Text;
 using System.Collections.Generic;
-using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEditor;
 using UnityEngine;
-using static UnityEditor.Searcher.SearcherWindow.Alignment;
 
 public class GenerateSphere : MonoBehaviour
 {
